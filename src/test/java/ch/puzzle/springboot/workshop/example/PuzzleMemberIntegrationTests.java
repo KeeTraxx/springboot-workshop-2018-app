@@ -1,7 +1,6 @@
 package ch.puzzle.springboot.workshop.example;
 
 import ch.puzzle.springboot.workshop.example.model.PuzzleMember;
-import ch.puzzle.springboot.workshop.example.repository.PuzzleMemberRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
@@ -37,10 +36,7 @@ public class PuzzleMemberIntegrationTests {
     private WebApplicationContext wac;
     private MockMvc mvc;
 
-    @Autowired
-    private PuzzleMemberRepository repository;
-
-    static String toJson(Object o) throws JsonProcessingException {
+    private static String toJson(Object o) throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(o);
     }
 
@@ -59,7 +55,7 @@ public class PuzzleMemberIntegrationTests {
         Integer id = JsonPath.read(result.getResponse().getContentAsString(), "$.id");
 
         mvc.perform(post("/api/puzzle-members/drink-coffee")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .contentType(MediaType.TEXT_PLAIN)
                 .content(id.toString()))
                 .andDo(print())
                 .andExpect(status().isOk())
